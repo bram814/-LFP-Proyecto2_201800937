@@ -1,19 +1,4 @@
-# Instalar la libreria con el comando $ pip install pdfkit
-
-import pdfkit
-#from tkinter import filedialog
-#from io import open
-
-class Reporte():
-
-    def __init__(self):
-        pass
-
-    def html_error(self):
-
-        document = open("Reporte_Error.html",'w')
-
-        message = """<!DOCTYPE html>
+<!DOCTYPE html>
         <html> 
             <head>
                 <tile> Errores</title>
@@ -42,14 +27,4 @@ class Reporte():
                 </table>
             </body>
         </html>
-        """
         
-        
-        document.write(message)
-        document.close()
-
-        with open("Reporte_Error.html") as f:
-            pdfkit.from_file(f, 'out.pdf')
-         
-prueba = Reporte()
-prueba.html_error()
