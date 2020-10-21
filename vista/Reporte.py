@@ -48,8 +48,12 @@ class Reporte():
         document.write(message)
         document.close()
 
-        with open("Reporte_Error.html") as f:
-            pdfkit.from_file(f, 'out.pdf')
+        try:
+            path_wkhtmltopdf = "C://Program Files//wkhtmltopdf//bin//wkhtmltopdf.exe"
+            config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+            pdfkit.from_file("Reporte_Error.html", "file.pdf",configuration=config)
+        except Exception as e:
+            print(e)
          
 prueba = Reporte()
 prueba.html_error()
