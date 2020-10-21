@@ -33,8 +33,8 @@ class Reporte():
                     <tr> 
                         <td> 1</td>
                         <td> 22</td>
-                        <td> 43</td>
-                        <td> @ </td>
+                        <td> 20000</td>
+                        <td> # </td>
                         <td> No se muestra</td>
                         
                     </tr>
@@ -44,14 +44,14 @@ class Reporte():
         </html>
         """
         
-        
+        print('prueba2')
         document.write(message)
         document.close()
 
         try:
             path_wkhtmltopdf = "C://Program Files//wkhtmltopdf//bin//wkhtmltopdf.exe"
             config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
-            pdfkit.from_file("Reporte_Error.html", "file.pdf",configuration=config)
+            pdfkit.from_file("Reporte_Error.html", "Reporte_Error_pdf.pdf",configuration=config)
         except Exception as e:
             print(e)
          
