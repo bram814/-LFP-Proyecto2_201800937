@@ -9,11 +9,11 @@ class Reporte():
     def __init__(self):
         pass
 
-    def html_error(self):
+    def html_error(self,lista_error):
 
         document = open("Reporte_Error.html",'w')
 
-        message = """<!DOCTYPE html>
+        message = f"""<!DOCTYPE html>
         <html> 
             <head>
                 <tile> Errores</title>
@@ -30,30 +30,95 @@ class Reporte():
                         <td bgcolor="99FF99"> Descripcion   </td>
                     </tr>
 
+                    {self.retornar_error(lista_error)}
+
+                </table>
+            </body>
+        </html>
+        """
+
+        document.write(message)
+        document.close()
+
+        
+        #path_wkhtmltopdf = "C://Program Files//wkhtmltopdf//bin//wkhtmltopdf.exe"
+        #config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+        #pdfkit.from_file("Reporte_Error.html", "Reporte_Error.pdf",configuration=config)
+        
+         
+
+    def reporte_html(self,lista_token):
+
+        document = open("Reporte.html",'w')
+
+        message = f"""<!DOCTYPE html>
+        <html> 
+            <head>
+                <tile> Reporte Final </title>
+            </head>
+            <body>
+                <h1> Tabla Tokens</h1>
+
+                <table border="1">
                     <tr> 
-                        <td> 1</td>
-                        <td> 22</td>
-                        <td> 20000</td>
-                        <td> # </td>
-                        <td> No se muestra</td>
-                        
+                        <td bgcolor="33ffda"> No.       </td>
+                        <td bgcolor="33ffda"> Fila      </td>
+                        <td bgcolor="33ffda"> Columna   </td>
+                        <td bgcolor="33ffda"> Lexema    </td>
+                        <td bgcolor="33ffda"> Token     </td>
                     </tr>
+
+                    {self.retornar_token(lista_token)}
 
                 </table>
             </body>
         </html>
         """
         
-        print('prueba2')
         document.write(message)
         document.close()
 
-        try:
-            path_wkhtmltopdf = "C://Program Files//wkhtmltopdf//bin//wkhtmltopdf.exe"
-            config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
-            pdfkit.from_file("Reporte_Error.html", "Reporte_Error_pdf.pdf",configuration=config)
-        except Exception as e:
-            print(e)
+        
+        #path_wkhtmltopdf = "C://Program Files//wkhtmltopdf//bin//wkhtmltopdf.exe"
+        #config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+        #pdfkit.from_file("Reporte.html", "Reporte.pdf",configuration=config)
+        
          
-prueba = Reporte()
-prueba.html_error()
+
+         
+    def retornar_error(self,lista_error):
+        variable = ''
+        x = 0
+
+        while x < len (lista_error):
+
+            variable += f""" 
+            <tr> 
+                <td> {lista_error[x].getContador()}</td>
+                <td> {lista_error[x].getFila()}</td>
+                <td> {lista_error[x].getColumna()}</td>
+                <td> {lista_error[x].getCaracter()}</td>
+                <td> {lista_error[x].getDescripcion()}</td>
+            </tr>
+            """
+
+            x += 1
+        return variable
+
+    def retornar_token(self,lista_token):
+        variable = ''
+        x = 0 
+        while x < len(lista_token):
+
+            variable += f""" 
+            <tr> 
+                <td> {lista_token[x].getContador()}</td>
+                <td> {lista_token[x].getFila()}</td>
+                <td> {lista_token[x].getColumna()}</td>
+                <td> {lista_token[x].getLexema()}</td>
+                <td> {lista_token[x].getToken()}</td>
+            </tr>
+            
+            """
+            x += 1
+        return variable
