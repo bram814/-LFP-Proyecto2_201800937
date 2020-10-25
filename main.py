@@ -40,7 +40,6 @@ class Main():
 lista_error = []
 lista_token = []
 
-a = 'A'
 
 main = Main()
 main.menu_principal(lista_error,lista_token)

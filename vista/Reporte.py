@@ -19,17 +19,18 @@ class Reporte():
                 <tile> Errores</title>
             </head>
             <body>
-                <h1> Tabla Errores </h1>
+                <div style="text-align:center;">
+                    <h1> Tabla Errores </h1>
 
-                <table border="1">
-                    <tr> 
-                        <td bgcolor="99FF99"> No.           </td>
-                        <td bgcolor="99FF99"> Fila          </td>
-                        <td bgcolor="99FF99"> Columna       </td>
-                        <td bgcolor="99FF99"> Caracter      </td>
-                        <td bgcolor="99FF99"> Descripcion   </td>
-                    </tr>
-
+                    <table border="1" align="center">
+                        <tr> 
+                            <td bgcolor="99FF99"> No.           </td>
+                            <td bgcolor="99FF99"> Fila          </td>
+                            <td bgcolor="99FF99"> Columna       </td>
+                            <td bgcolor="99FF99"> Caracter      </td>
+                            <td bgcolor="99FF99"> Descripcion   </td>
+                        </tr>
+                </div>
                     {self.retornar_error(lista_error)}
 
                 </table>
@@ -57,17 +58,19 @@ class Reporte():
                 <tile> Reporte Final </title>
             </head>
             <body>
-                <h1> Tabla Tokens</h1>
-
-                <table border="1">
-                    <tr> 
-                        <td bgcolor="33ffda"> No.       </td>
-                        <td bgcolor="33ffda"> Fila      </td>
-                        <td bgcolor="33ffda"> Columna   </td>
-                        <td bgcolor="33ffda"> Lexema    </td>
-                        <td bgcolor="33ffda"> Token     </td>
-                    </tr>
-
+                
+                <div style="text-align:center;">
+                    <h1> Tabla Tokens</h1>
+                    
+                    <table border="1" align="center">
+                        <tr> 
+                            <td bgcolor="33ffda"> No.       </td>
+                            <td bgcolor="33ffda"> Fila      </td>
+                            <td bgcolor="33ffda"> Columna   </td>
+                            <td bgcolor="33ffda"> Lexema    </td>
+                            <td bgcolor="33ffda"> Token     </td>
+                        </tr>
+                </div>
                     {self.retornar_token(lista_token)}
 
                 </table>
