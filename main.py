@@ -29,6 +29,7 @@ class Main():
                     x = 0
                     while x < len(lista_token):
                         print(lista_token[x].getContador())
+                        print(lista_token[x].getToken())
                         x += 1
 
                 elif (entrada == 3) :

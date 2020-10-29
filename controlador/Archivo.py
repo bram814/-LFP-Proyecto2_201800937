@@ -30,7 +30,6 @@ class Archivo():
             archivo = open(f"{ruta}","r", encoding="utf-8")
             texto = archivo.readlines()
             archivo.close()
-            #print(f"Texto:{texto}\n")
             self.anazalidar_a.__inicio__(texto,lista_error,lista_token)
 
             
