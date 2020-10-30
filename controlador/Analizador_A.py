@@ -1,5 +1,8 @@
 from modelo.Error import Error
 from modelo.Token import Token
+from modelo.Lista import Lista
+from modelo.ElementoLista import ElementoLista
+from modelo.DefectoLista import DefectoLista
 
 from vista.Reporte import Reporte
 
@@ -7,12 +10,27 @@ class Anazalizador_A():
 
     def __init__(self):
         self.reporte_error = Reporte()
+
+        self.lista = []
+        self.elemento_lista = []
+        self.defecto_lista = []
+
+        self.nodo_uno = ''
+        self.nodo_dos = ''
+        self.nodo_tres = ''
+
         self.entrada = ''
         self.caracter_actual = ''
         self.lexema_global = ''
         self.tem = ''
+
+        self.contador_lista = 1
+
         self.contador_error = 1
         self.contador_token = 1
+
+
+
         self.tokens = ['lista','matriz','tabla','nodo','nodos']
         self.lista_doble = ['verdadero','falso']
         self.lista_color = [
@@ -119,6 +137,7 @@ class Anazalizador_A():
                                                             size = self.get_forma(x)
                                                             if (self.lexema_global.lower() in self.lista_doble):
                                                                 enlazada_lista = self.lexema_global.lower()
+                                                                self.guardar_lista(nombre_lista,forma_lista,enlazada_lista)
                                                                 self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(x),self.lexema_global.lower(),'TK_lista_doble')
                                                                 x = size
                                                                 size = self.parentesis_cerrado(x)
@@ -146,6 +165,8 @@ class Anazalizador_A():
                                                                                 
                                                                                 if (self.entrada[size]==self.signos['PUNTOCOMA']):
                                                                                     x = size
+
+                                                                                    self.guardar_defecto_lista(self.nodo_uno,self.nodo_dos)
                                                                                 else:
                                                                                     self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir punto y coma')
                                                                                     break
@@ -505,6 +526,14 @@ class Anazalizador_A():
                     self.lexema_global =''   
                     size = self.nodos(actual,lista_error,lista_token)  
                     actual = size
+                    i = 0
+                    suma = 1
+                    while i < self.nodo_tres:
+                        nombre = f'{self.nodo_uno} {suma}' 
+                        self.guardar_elemento(nombre,self.nodo_dos)
+                        suma += 1
+                        i += 1
+
                     if (self.entrada[size]==self.signos['PUNTOCOMA']):
                         return actual
                     else:
@@ -515,6 +544,7 @@ class Anazalizador_A():
                     self.lexema_global =''   
                     size = self.nodo(actual,lista_error,lista_token)  
                     actual = size
+                    self.guardar_elemento(self.nodo_uno,self.nodo_dos)
                     if (self.entrada[size]==self.signos['PUNTOCOMA']):
                         return actual
                     else:
@@ -542,6 +572,7 @@ class Anazalizador_A():
                     if (self.entrada[numeral] == self.signos['NUMERAL']):
                         actual = numeral
                         nombre_nodo = self.entrada[actual]
+                        self.nodo_uno = nombre_nodo
                         self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),nombre_nodo,'TK_etiqueta_lista')     
                             
                         actual += 1
@@ -568,6 +599,7 @@ class Anazalizador_A():
                         size = self.get_size_nombre_lista(actual)
                         if(self.entrada[size]==self.tem):
                             
+                            self.nodo_uno = self.lexema_global
                             self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),self.tem + self.lexema_global + self.tem,'TK_etiqueta_lista')     
                             actual = size
                             actual += 1
@@ -643,6 +675,7 @@ class Anazalizador_A():
 
         if (lexema.lower() in self.lista_color):
             self.guardar_lista_token(lista_token,self.get_fila(contador),self.get_columna(contador),lexema,'TK_color_elemento')     
+            self.nodo_dos = lexema.lower()
             while actual < len(self.entrada):
                 c = self.entrada[actual]
 
@@ -661,6 +694,7 @@ class Anazalizador_A():
         elif (self.entrada[actual]==self.signos['NUMERAL']):
             self.guardar_lista_token(lista_token,self.get_fila(contador),self.get_columna(contador),'#','TK_color_elemento')     
             actual += 1
+            self.nodo_dos = '#'
             while actual < len(self.entrada):
                 c = self.entrada[actual]
 
@@ -695,7 +729,7 @@ class Anazalizador_A():
                     self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),self.numero_elemento,'TK_contador_elemento')
                     actual = size
                     size = self.get_coma(actual)
-
+                    self.nodo_tres = int(self.numero_elemento)
                     if (self.entrada[size]==self.signos['COMA']):
                         self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),',','TK_coma')
                         actual = size
@@ -709,7 +743,7 @@ class Anazalizador_A():
                             if (self.entrada[numeral] == self.signos['NUMERAL']):
                                 actual = numeral
                                 nombre_nodo = self.entrada[actual]
-
+                                self.nodo_uno = nombre_nodo
                                 self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),nombre_nodo,'TK_etiqueta_lista')     
                                     
                                 actual += 1
@@ -739,6 +773,7 @@ class Anazalizador_A():
                                 if(self.entrada[size]==self.tem):
                                     
                                     self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),self.tem + self.lexema_global + self.tem,'TK_etiqueta_lista')     
+                                    self.nodo_uno = self.lexema_global
                                     actual = size
                                     actual += 1
                                     size = self.parentesis_cerrado(actual)
@@ -880,6 +915,7 @@ class Anazalizador_A():
                     if(self.entrada[size]==self.tem):
                             
                         self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),self.tem + self.lexema_global + self.tem,'TK_etiqueta_lista')     
+                        self.nodo_uno = self.lexema_global
                         actual = size
                         actual += 1
                         size = self.parentesis_cerrado(actual)
@@ -952,6 +988,7 @@ class Anazalizador_A():
 
         if (lexema.lower() in self.lista_color):
             self.guardar_lista_token(lista_token,self.get_fila(contador),self.get_columna(contador),lexema,'TK_color_elemento')     
+            self.nodo_dos = lexema
             while actual < len(self.entrada):
                 c = self.entrada[actual]
 
@@ -971,3 +1008,16 @@ class Anazalizador_A():
             self.guardar_lista_error(lista_error,self.get_fila(actual),self.get_columna(actual),self.entrada[actual],'El color esta incorrecto') 
             return actual
         return actual
+
+
+    def guardar_lista(self,nombre,forma,boolean):
+        almacenado = Lista(self.contador_lista,nombre,forma,boolean)
+        self.lista.append(almacenado) 
+
+    def guardar_elemento(self,etiqueta,color):
+        almacenado = ElementoLista(self.contador_lista,etiqueta,color)
+        self.elemento_lista.append(almacenado)
+
+    def guardar_defecto_lista(self,nombre,color):
+        almacenado = DefectoLista(self.contador_lista,nombre,color)
+        self.defecto_lista.append(almacenado)

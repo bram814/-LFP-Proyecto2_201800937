@@ -9,6 +9,7 @@ class DefectoLista():
         self.__nombre = nombre
         self.__color = color
 
+   
     def getContador(self):
         return self.__contador
     def setContador(self,contador):
