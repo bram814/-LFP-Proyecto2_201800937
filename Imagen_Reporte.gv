@@ -1,6 +1,6 @@
 digraph Imagen_Reporte {
 	rankdir=LR size="8,5"
-	node [shape=circle]
+	node [shape=diamond]
 	Luis2s [fillcolor="#376ce6" style=filled]
 	"Persona 1" [fillcolor="#13da30" style=filled]
 	"Persona 2" [fillcolor="#13da30" style=filled]

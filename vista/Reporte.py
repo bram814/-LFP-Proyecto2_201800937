@@ -48,7 +48,7 @@ class Reporte():
         
          
 
-    def reporte_html(self,lista_token):
+    def reporte_html(self,lista_token,nombre):
 
         document = open("Reporte.html",'w')
 
@@ -61,7 +61,8 @@ class Reporte():
             <body>
                 <div style="text-align:center;">
                 <h1> Gráfica Generada</h1>
-                <img src="Imagen_Reporte.gv.png" align="center">
+                <img src="Imagen_Reporte.gv.svg" align="center">
+                <p align="center"> {nombre} </p>
                 </div>
                  
                 

@@ -81,12 +81,13 @@ class Main():
 
                     i = 0
                     while i < len(self.archivo.anazalidar_a.lista):
+                        nombre = self.archivo.anazalidar_a.lista[i].getNombre()
                         self.graph.reporte_png(self.archivo.anazalidar_a.elemento_lista,self.archivo.anazalidar_a.lista[i].getContador(),self.archivo.anazalidar_a.lista[i].getNombre(),self.archivo.anazalidar_a.lista[i].getForma(),self.archivo.anazalidar_a.lista[i].getBoolean())
                         self.graph.reporte_svg(self.archivo.anazalidar_a.elemento_lista,self.archivo.anazalidar_a.lista[i].getContador(),self.archivo.anazalidar_a.lista[i].getNombre(),self.archivo.anazalidar_a.lista[i].getForma(),self.archivo.anazalidar_a.lista[i].getBoolean())
                         
                         i += 1  
 
-                    self.reporte_error.reporte_html(lista_token)
+                    self.reporte_error.reporte_html(lista_token,nombre)
                     
 
                     

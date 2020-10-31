@@ -9,9 +9,37 @@ class Graphviz():
 
     def reporte_png(self,lista_elementos,contador,nombre,forma,doble):
 
-        f = Digraph(format='png', name='Imagen_Reporte')
-        f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
-        f.attr('node', shape=f'circle')
+        
+        
+        if (forma.lower() == Forma.circulo.name):
+            f = Digraph(format='png', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.circulo.value}')
+        
+        elif (forma.lower() == Forma.rectangulo.name):
+            f = Digraph(format='png', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.rectangulo.value}')
+
+        elif (forma.lower() == Forma.triangulo.name):
+            f = Digraph(format='png', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.triangulo.value}')
+        
+        elif (forma.lower() == Forma.punto.name):
+            f = Digraph(format='png', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.punto.value}')
+        
+        elif (forma.lower() == Forma.hexagono.name):
+            f = Digraph(format='png', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.hexagono.value}')
+        
+        elif (forma.lower() == Forma.diamante.name):
+            f = Digraph(format='png', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.diamante.value}')
 
             
         for linea in lista_elementos:
@@ -98,9 +126,35 @@ class Graphviz():
     
     def reporte_svg(self,lista_elementos,contador,nombre,forma,doble):
 
-        f = Digraph(format='svg', name='Imagen_Reporte')
-        f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
-        f.attr('node', shape=f'circle')
+        if (forma.lower() == Forma.circulo.name):
+            f = Digraph(format='svg', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.circulo.value}')
+        
+        elif (forma.lower() == Forma.rectangulo.name):
+            f = Digraph(format='svg', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.rectangulo.value}')
+
+        elif (forma.lower() == Forma.triangulo.name):
+            f = Digraph(format='svg', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.triangulo.value}')
+        
+        elif (forma.lower() == Forma.punto.name):
+            f = Digraph(format='svg', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.punto.value}')
+        
+        elif (forma.lower() == Forma.hexagono.name):
+            f = Digraph(format='svg', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.hexagono.value}')
+        
+        elif (forma.lower() == Forma.diamante.name):
+            f = Digraph(format='svg', name='Imagen_Reporte')
+            f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
+            f.attr('node', shape=f'{Forma.diamante.value}')
 
         for linea in lista_elementos:
 
@@ -219,6 +273,11 @@ class Color(enum.Enum):
     blanco      = '#ffffff'
 
 class Forma(enum.Enum):
-    pass
+    circulo     = 'circle'
+    rectangulo  = 'rectangle'
+    triangulo   = 'triangle'
+    punto       = 'point'
+    hexagono    = 'hexagon'
+    diamante    = 'diamond'
 
     
