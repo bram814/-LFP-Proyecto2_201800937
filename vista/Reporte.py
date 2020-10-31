@@ -56,11 +56,17 @@ class Reporte():
         <html> 
             <head>
                 <tile> Reporte Final </title>
+
             </head>
             <body>
+                <div style="text-align:center;">
+                <h1> Gráfica Generada</h1>
+                <img src="Imagen_Reporte.gv.png" align="center">
+                </div>
+                 
                 
                 <div style="text-align:center;">
-                    <h1> Tabla Tokens</h1>
+                    <h1> Tabla de Tokens</h1>
                     
                     <table border="1" align="center">
                         <tr> 
@@ -74,6 +80,15 @@ class Reporte():
                     {self.retornar_token(lista_token)}
 
                 </table>
+
+
+                <div style="text-align:center;">
+                <h1> Árbol de Derivación</h1>
+                
+                </div>
+
+
+
             </body>
         </html>
         """

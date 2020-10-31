@@ -167,6 +167,7 @@ class Anazalizador_A():
                                                                                     x = size
 
                                                                                     self.guardar_defecto_lista(self.nodo_uno,self.nodo_dos)
+                                                                                    self.contador_lista += 1
                                                                                 else:
                                                                                     self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir punto y coma')
                                                                                     break
@@ -244,9 +245,12 @@ class Anazalizador_A():
 
                         
             x += 1
-            
+
         self.reporte_error.html_error(lista_error)
-        self.reporte_error.reporte_html(lista_token)
+        #self.reporte_error.reporte_html(lista_token)
+        print('\n')
+        
+        
 
     # METODO DE COMENTARIO
 

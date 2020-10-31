@@ -21,5 +21,5 @@ class ElementoLista():
 
     def getColor(self):
         return self.__color
-    def setColo(self,color):
+    def setColor(self,color):
         self.__color = color
