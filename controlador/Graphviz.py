@@ -12,6 +12,8 @@ class Graphviz():
         f = Digraph(format='png', name='Imagen_Reporte')
         f.attr(rankdir='LR', size='8,5')    # PARA QUE SEA HORIZONTAL
         f.attr('node', shape=f'circle')
+
+            
         for linea in lista_elementos:
 
             if (linea.getColor().lower() == Color.azul.name):
@@ -74,12 +76,22 @@ class Graphviz():
                 f.node(f'{linea.getEtiqueta()}', style='filled',fillcolor=(Color.blanco.value))              
 
 
-        x = 0
-        while x < len(lista_elementos):
-            if (x +1 == len(lista_elementos)):
-                break
-            f.edge(f'{lista_elementos[x].getEtiqueta()}', f'{lista_elementos[x+1].getEtiqueta()}', label=f'') 
-            x += 1
+        if (doble.lower() == 'verdadero'):
+            x = 0
+            while x < len(lista_elementos):
+                if (x +1 == len(lista_elementos)):
+                    break
+                f.edge(f'{lista_elementos[x].getEtiqueta()}', f'{lista_elementos[x+1].getEtiqueta()}', label=f'')
+                f.edge(f'{lista_elementos[x+1].getEtiqueta()}', f'{lista_elementos[x].getEtiqueta()}', label=f'') 
+                x += 1
+        elif (doble.lower() == 'falso'):
+
+            x = 0
+            while x < len(lista_elementos):
+                if (x +1 == len(lista_elementos)):
+                    break
+                f.edge(f'{lista_elementos[x].getEtiqueta()}', f'{lista_elementos[x+1].getEtiqueta()}', label=f'') 
+                x += 1
 
 
         f.view()
@@ -151,13 +163,22 @@ class Graphviz():
             elif (linea.getColor().lower() == Color.blanco.name):
                 f.node(f'{linea.getEtiqueta()}', style='filled',fillcolor=(Color.blanco.value))              
 
+        if (doble.lower() == 'verdadero'):
+            x = 0
+            while x < len(lista_elementos):
+                if (x +1 == len(lista_elementos)):
+                    break
+                f.edge(f'{lista_elementos[x].getEtiqueta()}', f'{lista_elementos[x+1].getEtiqueta()}', label=f'')
+                f.edge(f'{lista_elementos[x+1].getEtiqueta()}', f'{lista_elementos[x].getEtiqueta()}', label=f'') 
+                x += 1
+        elif (doble.lower() == 'falso'):
 
-        x = 0
-        while x < len(lista_elementos):
-            if (x +1 == len(lista_elementos)):
-                break
-            f.edge(f'{lista_elementos[x].getEtiqueta()}', f'{lista_elementos[x+1].getEtiqueta()}', label=f'') 
-            x += 1
+            x = 0
+            while x < len(lista_elementos):
+                if (x +1 == len(lista_elementos)):
+                    break
+                f.edge(f'{lista_elementos[x].getEtiqueta()}', f'{lista_elementos[x+1].getEtiqueta()}', label=f'') 
+                x += 1
 
         f.view()
 

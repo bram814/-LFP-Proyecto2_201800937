@@ -251,7 +251,7 @@ class Anazalizador_A():
         print('\n')
         
         
-
+# 
     # METODO DE COMENTARIO
 
     def comentario_slash(self,actual):

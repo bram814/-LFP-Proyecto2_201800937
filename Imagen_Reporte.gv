@@ -7,7 +7,11 @@ digraph Imagen_Reporte {
 	Disponible [fillcolor="#ffffff" style=filled]
 	Manuel [fillcolor="#df0b09" style=filled]
 	Luis2s -> "Persona 1" [label=""]
+	"Persona 1" -> Luis2s [label=""]
 	"Persona 1" -> "Persona 2" [label=""]
+	"Persona 2" -> "Persona 1" [label=""]
 	"Persona 2" -> Disponible [label=""]
+	Disponible -> "Persona 2" [label=""]
 	Disponible -> Manuel [label=""]
+	Manuel -> Disponible [label=""]
 }
