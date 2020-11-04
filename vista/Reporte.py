@@ -62,7 +62,6 @@ class Reporte():
                 <div style="text-align:center;">
                 <h1> Gráfica Generada</h1>
                 <img src="Imagen_Reporte.gv.svg" align="center">
-                <p align="center"> {nombre} </p>
                 </div>
                  
                 
@@ -103,6 +102,44 @@ class Reporte():
         #pdfkit.from_file("Reporte.html", "Reporte.pdf",configuration=config)
         
          
+    def reporte_html2(self,lista_token):
+
+        document = open("Reporte.html",'w')
+
+        message = f"""<!DOCTYPE html>
+        <html> 
+            <head>
+                <tile> Reporte Final </title>
+
+            </head>
+            <body>
+                 
+                
+                <div style="text-align:center;">
+                    <h1> Tabla de Tokens</h1>
+                    
+                    <table border="1" align="center">
+                        <tr> 
+                            <td bgcolor="33ffda"> No.       </td>
+                            <td bgcolor="33ffda"> Fila      </td>
+                            <td bgcolor="33ffda"> Columna   </td>
+                            <td bgcolor="33ffda"> Lexema    </td>
+                            <td bgcolor="33ffda"> Token     </td>
+                        </tr>
+                </div>
+                    {self.retornar_token(lista_token)}
+
+                </table>
+
+
+
+
+            </body>
+        </html>
+        """
+        
+        document.write(message)
+        document.close()
 
          
     def retornar_error(self,lista_error):

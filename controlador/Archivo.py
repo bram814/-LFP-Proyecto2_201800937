@@ -4,6 +4,7 @@ from controlador.Analizador_A import Anazalizador_A
 
 class Archivo():
 
+    
     def __init__(self):
        self.anazalidar_a = Anazalizador_A()
 
