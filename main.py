@@ -128,6 +128,25 @@ class Main():
                                 
                             x += 1
                         
+                        print('\n\tElementos Cambiados')
+                        
+                        x = 0 
+                        while x < len(self.archivo.anazalidar_a.elemento_matriz):
+                            print(f'{self.archivo.anazalidar_a.elemento_matriz[x].__str__()}')
+                            
+                            x += 1
+                        
+                        x = 0
+                        while x < len(self.archivo.anazalidar_a.elemento_matriz2):
+
+                            contador = self.archivo.anazalidar_a.elemento_matriz2[x].getContador()
+                            fila = self.archivo.anazalidar_a.elemento_matriz2[x].getFila()
+                            columna = self.archivo.anazalidar_a.elemento_matriz2[x].getColumna()
+                            nombre = self.archivo.anazalidar_a.elemento_matriz2[x].getEtiqueta()
+                            color = self.archivo.anazalidar_a.elemento_matriz2[x].getColor()
+                            print(contador,fila,columna,nombre,color)
+                            self.enviar_matriz(contador,fila,columna,nombre,color)
+                            x += 1
                         j = 0
                         while j < len(self.archivo.anazalidar_a.elemento_matriz):
                             actual = self.archivo.anazalidar_a.elemento_matriz[j].getContador()
@@ -141,14 +160,32 @@ class Main():
                                 if(self.archivo.anazalidar_a.elemento_matriz[j].getColor()=='#'):
                                     self.archivo.anazalidar_a.elemento_matriz[j].setColor(self.retornar_color(actual))
                             j += 1  
+                        print('\n\tElementos Corregidos')
                         
-
-                        print('\n\tElementos 1')
-
                         x = 0 
                         while x < len(self.archivo.anazalidar_a.elemento_matriz):
                             print(f'{self.archivo.anazalidar_a.elemento_matriz[x].__str__()}')
+                            
                             x += 1
+                        
+
+                        x = 0 
+                        while x < len(self.archivo.anazalidar_a.matriz):
+
+                            contador = self.archivo.anazalidar_a.matriz[x].getContador()
+                            fila = self.archivo.anazalidar_a.matriz[x].getFila()
+                            columna = self.archivo.anazalidar_a.matriz[x].getColumna()
+                            nombre = self.archivo.anazalidar_a.matriz[x].getNombre()
+                            forma = self.archivo.anazalidar_a.matriz[x].getForma()
+                            boolean = self.archivo.anazalidar_a.matriz[x].getBoolean()
+                            self.graph.reporte_matriz(self.archivo.anazalidar_a.elemento_matriz,contador,fila,columna,nombre,forma,boolean)
+                        
+                            x += 1
+
+                           
+                        self.reporte_error.reporte_html(lista_token,nombre)
+                    
+
 
 
 
@@ -189,6 +226,20 @@ class Main():
                 return retornar
             x += 1
         return retornar        
+    
+    def enviar_matriz(self,contador,fila,columna,nombre,color):
+        x = 0
+        while x < len(self.archivo.anazalidar_a.elemento_matriz):
+            contador_matriz =self.archivo.anazalidar_a.elemento_matriz[x].getContador()
+            fila_matriz = self.archivo.anazalidar_a.elemento_matriz[x].getFila()
+            columna_matriz = self.archivo.anazalidar_a.elemento_matriz[x].getColumna()
+            if (int(contador_matriz) == int(contador) and int(fila_matriz) == int(fila) and int(columna_matriz) == int(columna)):
+                print('valido')
+                print(nombre)
+                print(color)
+                self.archivo.anazalidar_a.elemento_matriz[x].setEtiqueta(nombre)
+                self.archivo.anazalidar_a.elemento_matriz[x].setColor(color)
+            x += 1
 
 
 lista_error = []
