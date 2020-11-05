@@ -15,6 +15,9 @@ class Anazalizador_A():
     def __init__(self):
         self.prueba = 'mensaje prueba'
 
+        # TABLA
+
+
         # MATRIZ
         self.contador_matriz = 1
         self.matriz = []
@@ -294,7 +297,7 @@ class Anazalizador_A():
                                             self.recursivo_columna = 1
                                             while i < int(self.columna_matriz):
                                                 if (int(self.recursivo_columna) <= int(self.columna_matriz)):
-                                                    self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),'Disponible','defecto')
+                                                    self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),f'Disponible {self.recursivo_fila},{self.recursivo_columna}','defecto')
                                                     self.recursivo_columna += 1
                                                 i += 1
                                             self.recursivo_fila += 1
@@ -1463,7 +1466,7 @@ class Anazalizador_A():
 
                             if (int(self.recursivo_columna) < int(self.columna_matriz)):
                                 self.recursivo_columna += 1
-                                self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),'Disponible','defecto')
+                                self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),f'Disponible {self.recursivo_fila},{self.recursivo_columna}','defecto')
                                 print(f'disponible {self.recursivo_columna}')
                             x += 1
                         

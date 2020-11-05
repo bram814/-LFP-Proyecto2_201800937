@@ -178,8 +178,9 @@ class Main():
                             nombre = self.archivo.anazalidar_a.matriz[x].getNombre()
                             forma = self.archivo.anazalidar_a.matriz[x].getForma()
                             boolean = self.archivo.anazalidar_a.matriz[x].getBoolean()
+                            
                             self.graph.reporte_matriz(self.archivo.anazalidar_a.elemento_matriz,contador,fila,columna,nombre,forma,boolean)
-                        
+                            
                             x += 1
 
                            
