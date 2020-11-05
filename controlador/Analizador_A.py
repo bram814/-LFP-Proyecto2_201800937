@@ -1867,7 +1867,7 @@ class Anazalizador_A():
                     actual += 1
                     size = self.get_size_nombre_lista(actual)
                     if(self.entrada[size]==self.tem):
-                        nombre_tabla = self.lexema_global
+                        #nombre_tabla = self.lexema_global
                         self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),self.tem+self.lexema_global+self.tem,'TK_nombre_tabla')
                         actual = size
                         self.estado = 4
@@ -2033,7 +2033,7 @@ class Anazalizador_A():
                 actual += 1
                 size = self.get_size_nombre_lista(actual)
                 if(self.entrada[size]==self.tem):
-                    etiqueta_tabla = self.lexema_global
+                    #etiqueta_tabla = self.lexema_global
 
                     self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),self.tem+self.lexema_global+self.tem,'TK_etiqueta_tabla')
                     actual = size
@@ -2116,7 +2116,7 @@ class Anazalizador_A():
                 actual += 1
                 size = self.get_size_nombre_lista(actual)
                 if(self.entrada[size]==self.tem):
-                    etiqueta_matriz = self.lexema_global.lower()
+                    #etiqueta_matriz = self.lexema_global.lower()
                     self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),self.tem+self.lexema_global+self.tem,'TK_nombre_matriz')
                     #self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),etiqueta_matriz,'disponible')
                     actual = size
