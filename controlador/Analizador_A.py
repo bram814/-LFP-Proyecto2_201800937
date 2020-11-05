@@ -16,6 +16,9 @@ class Anazalizador_A():
         self.prueba = 'mensaje prueba'
 
         # TABLA
+        self.estado_tabla = False
+        self.columna_tabla = 1
+        self.fila_tabla = 1
 
 
         # MATRIZ
@@ -261,12 +264,12 @@ class Anazalizador_A():
                         break
 
                         # INICIO DE MATRIZ
-                elif (self.entrada[x]=='m'):
+                elif (self.entrada[x].lower()=='m'):
                     tem = x
                     self.lexema_global += self.entrada[x]
                     x += 1
                     size = self.get_matriz(x)
-                    if (self.lexema_global == 'matriz'):
+                    if (self.lexema_global.lower() == 'matriz'):
                         self.guardar_lista_token(lista_token,self.get_fila(tem),self.get_columna(tem),"matriz",'TK_matriz')
                         print(f'Tk_matriz ; Lexema: {self.lexema_global}')
                         self.lexema_global =''
@@ -311,14 +314,63 @@ class Anazalizador_A():
                             else:
                                 self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir un defecto')
                                 break
+                        else:
+                            self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Sintaxis Incorrecta')
+                            break
 
                     else:
                         self.guardar_lista_error(lista_error,self.get_fila(tem),self.get_columna(tem),self.entrada[x],'Se espera *lista, matriz, tabla*')
                         break
 
                         # INICIO DE TABLA
-                elif (self.entrada[x]=='t'):
-                    print(f'tabla       Fila: {self.get_fila(x)} Columna:{self.get_columna(x)}')
+                elif (self.entrada[x].lower()=='t'):
+                    tem = x
+                    self.lexema_global += self.entrada[x]
+                    x += 1
+                    size = self.get_matriz(x)
+                    if (self.lexema_global.lower()=='tabla'):
+                        x = size
+                        self.guardar_lista_token(lista_token,self.get_fila(int(tem)),self.get_columna(int(tem)),f"{self.lexema_global}",'TK_tabla')
+                        nombre_tabla = self.lexema_global
+                        self.lexema_global = ''
+                        self.estado = 0
+                        size = self.tabla_(x,lista_error,lista_token)
+                        x = size
+                        if (self.entrada[size]==self.signos['LLAVEC']):
+                            self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),"}",'TK_llave_cerrada')
+                            x += 1
+                            size  = self.defecto(x)
+                            if (self.lexema_global.lower() == 'defecto'):
+
+                                x = size
+                                self.guardar_lista_token(lista_token,self.get_fila(x-6),self.get_columna(x-6),"defecto",'TK_defecto')
+                            
+                                size = self.defecto_nodo(x,lista_error,lista_token)
+                                if (self.entrada[size]==self.signos['PUNTOCOMA']):
+                                    x = size
+                                    self.guardar_defecto_lista(self.nodo_uno,self.nodo_dos)
+                                    
+                                   # self.estado_matriz = True
+                                    
+                                    
+
+                                    
+                                    
+                                    #self.contador_matriz += 1
+                                else:
+                                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir punto y coma')
+                                    break
+                            else:
+                                self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir un defecto')
+                                break
+                        else:
+                            self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Sintaxis Incorrecta')
+                            break
+
+
+                    else:
+                        self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Se espera *lista, matriz, tabla*')
+                        break
                 else:
                     self.guardar_lista_error(lista_error,self.get_fila(x),self.get_columna(x),self.entrada[x],'Se espera *lista, matriz, tabla*')
                     break
@@ -1330,11 +1382,6 @@ class Anazalizador_A():
         self.lexema_global = ''
         self.temporal_global = 0
 
-
-        '''if (self.aceptado == False):
-            print('aceptado')
-        else:
-            print('no aceptado')'''
         
         while actual < len(self.entrada):
             c = self.entrada[actual]
@@ -1514,8 +1561,10 @@ class Anazalizador_A():
                
             
 
-        elif (self.recursivo_columna == self.columna_matriz):
+        elif (int(self.recursivo_columna) == int(self.columna_matriz)):
             size = self.comilla_(actual)
+            size_numeral = self.buscar_numeral(actual)
+
             if (self.entrada[size]==self.signos['COMILLAS'] or self.entrada[size]==self.signos['DOBLECOMILLA']):
                 self.tem = self.entrada[size]
                 actual = size
@@ -1524,13 +1573,13 @@ class Anazalizador_A():
                 if(self.entrada[size]==self.tem):
                     etiqueta_matriz = self.lexema_global.lower()
                     self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),self.tem+self.lexema_global+self.tem,'TK_nombre_matriz')
+                    self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),etiqueta_matriz,'disponible')
                     actual = size
                     actual += 1
 
                     size = self.parentesis_cerrado(actual)
                     if (self.entrada[size]==self.signos['PARENTESISC']):
-                        
-                        self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),')','TK_parentesis_cerrado')
+
                         actual = size
                         self.recursivo_columna = 1
                         return actual
@@ -1538,6 +1587,23 @@ class Anazalizador_A():
                     else:
                         self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Se espera un parentesis cerrado  )')
                         return size
+            elif (self.entrada[size_numeral]==self.signos['NUMERAL']):
+                actual = size_numeral
+                self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),'#','TK_etiqueta_elemento')
+                self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),'#','disponible')
+                    
+                actual += 1
+
+                size = self.parentesis_cerrado(actual)
+                if (self.entrada[size]==self.signos['PARENTESISC']):
+
+                    actual = size
+                    self.recursivo_columna = 1
+                    return actual
+                        
+                else:
+                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Se espera un parentesis cerrado  )')
+                    return size
             else:
                 self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[actual],"Uso incorrecto de la comilla una Comilla '")
                 return size
@@ -1626,6 +1692,7 @@ class Anazalizador_A():
                         break
                 elif (self.entrada[size2]==self.signos['NUMERAL']):
                     actual = size2
+                    self.tem_nombre = '#'
                     self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),'#','TK_etiqueta_matriz')
                     self.estado = 6
 
@@ -1749,4 +1816,341 @@ class Anazalizador_A():
         else:
             self.guardar_lista_error(lista_error,self.get_fila(actual),self.get_columna(actual),self.entrada[actual],'El color esta incorrecto') 
             return actual
+        return actual
+
+    def tabla_(self,actual,lista_error,lista_token):
+
+        while actual < len(self.entrada):
+            if (self.estado == 0): # Obtiene Tk_parentesisi_abierto (
+                print(f'Estado actual: {self.estado} - Aceptado 0%') 
+                size = self.parentesis_abierto(actual)
+                if (self.entrada[size]==self.signos['PARENTESISA']):
+                    
+                    self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),'(','TK_parentesis_abierto')
+                    actual = size
+                    self.estado = 1
+                else:
+                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Se espera un parentesis abierto (')
+                    break
+            elif (self.estado == 1): # obtiene Tk_columna_tabla          c
+                print(f'Estado actual: {self.estado} - Aceptado 10%') 
+                size = self.matriz_fila_columna(actual)
+
+                if (0 < int(self.fila_columna_matriz)):
+                    self.guardar_lista_token(lista_token,self.get_fila(self.temporal_global),self.get_columna(self.temporal_global),self.fila_columna_matriz,'TK_columna_tabla')
+                    columna = self.fila_columna_matriz
+                    actual = size
+                    actual -= 1
+                    self.estado = 2
+                else:
+                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.lexema_global,'Error de Fila, debe ser un entero positivo*')
+                    break
+            
+            elif (self.estado == 2):    # obtiene TK_coma               ,
+                print(f'Estado actual: {self.estado} - Aceptado 20%')  
+                size = self.get_coma(actual)
+                actual = size
+
+                if (self.entrada[actual]==self.signos['COMA']):
+                    self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),',','TK_coma_matriz')
+                    self.estado = 3
+                else:
+                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ingresar una coma')
+                    break
+            
+            elif (self.estado == 3): #Tk_nombre_tabla
+                print(f'Estado actual: {self.estado} - Aceptado 50%') 
+                size = self.comilla_(actual)
+                if (self.entrada[size]==self.signos['COMILLAS'] or self.entrada[size]==self.signos['DOBLECOMILLA']):
+                    self.tem = self.entrada[size]
+                    actual = size
+                    actual += 1
+                    size = self.get_size_nombre_lista(actual)
+                    if(self.entrada[size]==self.tem):
+                        nombre_tabla = self.lexema_global
+                        self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),self.tem+self.lexema_global+self.tem,'TK_nombre_tabla')
+                        actual = size
+                        self.estado = 4
+                    else:
+                        self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[actual],"Debe de ingresar una Comilla '")
+                        break
+                else:
+                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[actual],"Debe de ingresar una Comilla '")
+                    break
+        
+            elif (self.estado == 4): # Tk_parentesis_cerrado
+                print(f'Estado actual: {self.estado} - Aceptado 100')
+                size = self.parentesis_cerrado(actual)
+                if (self.entrada[size]==self.signos['PARENTESISC']):
+                    
+                    self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),')','TK_parentesis_cerrado')
+                    actual = size
+                    self.estado = 5
+                else:
+                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Se espera un parentesis cerrado  )')
+                    break
+            elif (self.estado == 5): # Tk_llave_abierta
+                    size = self.llave_abierta(actual)
+                    if (self.entrada[size]==self.signos['LLAVEA']):
+                        self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),'{','TK_llave_abierta')
+                        actual = size
+                        self.estado = 6
+                    else:
+                        self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir una llave abierta {')
+                        break
+            elif (self.estado == 6):
+                self.columna_tabla = columna
+                size = self.elemento_tabla(actual,lista_error,lista_token)
+                actual = size
+                # GUARDAR 
+                return actual # aqui retorna la llave de cerradura
+            actual += 1
+
+        return actual
+    
+    def elemento_tabla(self,actual,lista_error,lista_token):
+        self.lexema_global = ''
+        self.temporal_global = 0
+
+        
+        while actual < len(self.entrada):
+            c = self.entrada[actual]
+            if (self.entrada[actual].isalpha()):
+                self.lexema_global += self.entrada[actual]
+                self.temporal_global = actual
+                actual += 1
+                break
+            elif (self.entrada[actual]==self.signos['SLASH'] and self.entrada[actual+1]==self.signos['SLASH']):
+                size = self.comentario_slash(actual)
+                actual = size
+            elif (self.entrada[actual]==self.signos['LLAVEC']):
+                return actual
+            else:
+                if (c==' '  or c==self.signos['TABULACION'] or c == self.signos['SALTODELINEA']):
+                    pass
+                else:
+                    self.lexema_global += self.entrada[actual]
+                    return actual
+            actual += 1
+        
+        while actual < len(self.entrada):
+            if(self.entrada[actual].isalpha()):
+                self.lexema_global += self.entrada[actual]
+            else:
+                break
+            actual += 1
+
+        
+
+        if (self.lexema_global.lower()=='fila'):
+
+            
+            self.guardar_lista_token(lista_token,self.get_fila(self.temporal_global),self.get_columna(self.temporal_global),self.lexema_global,'TK_fila_elemento')
+            self.lexema_global = ''           
+            size = self.parentesis_abierto(actual)
+            actual = size
+            if (self.entrada[actual]==self.signos['PARENTESISA']):
+                self.guardar_lista_token(lista_token,self.get_fila(self.temporal_global),self.get_columna(self.temporal_global),'(','TK_parentesis_abierto')
+                actual += 1
+                self.recursivo_columna = 1
+                size = self.recursivo_tabla(actual,lista_error,lista_token)
+                actual = size
+                if (self.entrada[actual]==self.signos['PARENTESISC']):
+                    self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),')','TK_parentesis_cerrado')
+                    actual += 1
+                    size = self.nodo_color(actual,lista_error,lista_token)
+                    if (self.entrada[size]==self.signos['PUNTOCOMA']):   
+                        actual = size  
+                        actual += 1
+                        self.recursivo_fila += 1
+                        self.recursivo_columna = 1
+                        size = self.elemento_tabla(actual,lista_error,lista_token)
+                        return size
+                    else:
+                        self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir un parentesis de apertura (')
+                        return size
+                else:
+                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir un parentesis de apertura (')
+                    return actual 
+            else:
+                self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir un parentesis de apertura (')
+                return actual
+        elif (self.lexema_global.lower()=='encabezados'):
+
+            
+            self.guardar_lista_token(lista_token,self.get_fila(self.temporal_global),self.get_columna(self.temporal_global),self.lexema_global,'TK_ecabezado_elemento')
+            self.lexema_global = ''
+            size = self.parentesis_abierto(actual)
+            actual = size
+            if (self.entrada[actual]==self.signos['PARENTESISA']):
+                self.guardar_lista_token(lista_token,self.get_fila(self.temporal_global),self.get_columna(self.temporal_global),'(','TK_parentesis_abierto')
+                actual += 1
+                self.recursivo_columna = 1
+                size = self.recursivo_tabla(actual,lista_error,lista_token)
+                actual = size
+                if (self.entrada[actual]==self.signos['PARENTESISC']):
+                    self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),')','TK_parentesis_cerrado')
+                    actual += 1
+                    size = self.nodo_color(actual,lista_error,lista_token)
+                    if (self.entrada[size]==self.signos['PUNTOCOMA']):   
+                        actual = size  
+                        actual += 1
+                        self.recursivo_fila += 1
+                        self.recursivo_columna = 1
+                        size = self.elemento_tabla(actual,lista_error,lista_token)
+                        return size
+                    else:
+                        self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir un parentesis de apertura (')
+                        return size
+                else:
+                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir un parentesis de apertura (')
+                    return actual 
+            else:
+                self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ir un parentesis de apertura (')
+                return actual
+        else:
+            if (self.lexema_global!=''):
+                self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.lexema_global,'Debe ser Fila o Encabezados')
+                return actual
+            else:
+                self.guardar_lista_error(lista_error,self.get_fila(actual),self.get_columna(actual),self.entrada[actual],'Debe ser Fila o Encabezados')
+                return actual
+
+        return actual
+    
+
+    def recursivo_tabla(self,actual,lista_error,lista_token):
+        self.lexema_global = ''
+        
+        if (int(self.recursivo_columna) < int(self.columna_tabla)):
+
+            size = self.comilla_(actual)
+            size_numeral = self.buscar_numeral(actual)
+
+            if (self.entrada[size]==self.signos['COMILLAS'] or self.entrada[size]==self.signos['DOBLECOMILLA']):
+                self.tem = self.entrada[size]
+                actual = size
+                actual += 1
+                size = self.get_size_nombre_lista(actual)
+                if(self.entrada[size]==self.tem):
+                    etiqueta_tabla = self.lexema_global
+
+                    self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),self.tem+self.lexema_global+self.tem,'TK_etiqueta_tabla')
+                    actual = size
+                    actual += 1
+                    size = self.get_coma(actual)
+                    size2 = self.parentesis_cerrado(actual)   
+                    # GUARDAR 
+                    #self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),etiqueta_matriz,'disponible')
+                    if (self.entrada[size]==self.signos['COMA']):
+                        actual = size
+                        self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),',','TK_coma')
+                        actual += 1
+                        self.recursivo_columna += 1
+
+                        size = self.recursivo_tabla(actual,lista_error,lista_token)
+                        return size
+
+                    elif (self.entrada[size2]==self.signos['PARENTESISC']):
+                        actual = size2
+                        x = 0
+                        while x < int(self.columna_tabla):
+
+                            if (int(self.recursivo_columna) < int(self.columna_tabla)):
+                                self.recursivo_columna += 1
+                                #self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),f'Disponible {self.recursivo_fila},{self.recursivo_columna}','defecto')
+                                print(f'disponible {self.recursivo_columna}')
+                            x += 1
+                        
+                        
+                        return actual
+                    else:
+                        self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ingresar una coma*')
+                        return size
+                else:
+                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[actual],"Debe de ingresar una Comilla '")
+                    return size
+            elif (self.entrada[size_numeral]==self.signos['NUMERAL']):
+                actual = size_numeral
+                self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),'#','TK_etiqueta_elemento')
+                actual += 1
+                size = self.get_coma(actual)
+                size2 = self.parentesis_cerrado(actual)    
+                #self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),'#','disponible')
+                if (self.entrada[size]==self.signos['COMA']):
+                    actual = size
+                    self.guardar_lista_token(lista_token,self.get_fila(size),self.get_columna(size),',','TK_coma_matriz')
+                    actual += 1
+                    self.recursivo_columna += 1
+
+                    size = self.recursivo_tabla(actual,lista_error,lista_token)
+                    return size
+
+                elif (self.entrada[size2]==self.signos['PARENTESISC']):
+                    actual = size2
+                    x = 0
+                    while x < int(self.columna_tabla):
+
+                        if (int(self.recursivo_columna) < int(self.columna_tabla)):
+                            print(f'disponible {self.recursivo_columna}')
+                            self.recursivo_columna += 1
+                        x += 1
+                    return actual
+                else:
+                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Debe de ingresar una coma*')
+                    return size    
+                
+            else:
+                self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[actual],"Uso incorrecto de la comilla una Comilla '")
+                return size
+
+        #elif (int(self.recursivo_columna) == int(self.columna_matriz)):
+        elif (int(self.recursivo_columna) == int(self.columna_tabla)):
+        
+            size = self.comilla_(actual)
+            size_numeral = self.buscar_numeral(actual)
+
+            if (self.entrada[size]==self.signos['COMILLAS'] or self.entrada[size]==self.signos['DOBLECOMILLA']):
+                self.tem = self.entrada[size]
+                actual = size
+                actual += 1
+                size = self.get_size_nombre_lista(actual)
+                if(self.entrada[size]==self.tem):
+                    etiqueta_matriz = self.lexema_global.lower()
+                    self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),self.tem+self.lexema_global+self.tem,'TK_nombre_matriz')
+                    #self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),etiqueta_matriz,'disponible')
+                    actual = size
+                    actual += 1
+
+                    size = self.parentesis_cerrado(actual)
+                    if (self.entrada[size]==self.signos['PARENTESISC']):
+
+                        actual = size
+                        self.recursivo_columna = 1
+                        return actual
+                        
+                    else:
+                        self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Se espera un parentesis cerrado  )')
+                        return size
+            elif (self.entrada[size_numeral]==self.signos['NUMERAL']):
+                actual = size_numeral
+                self.guardar_lista_token(lista_token,self.get_fila(actual),self.get_columna(actual),'#','TK_etiqueta_elemento')
+                #self.guardar_elemento_matriz(int(self.recursivo_fila),int(self.recursivo_columna),'#','disponible')
+                    
+                actual += 1
+
+                size = self.parentesis_cerrado(actual)
+                if (self.entrada[size]==self.signos['PARENTESISC']):
+
+                    actual = size
+                    self.recursivo_columna = 1
+                    return actual
+                        
+                else:
+                    self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[size],'Se espera un parentesis cerrado  )')
+                    return size
+            else:
+                self.guardar_lista_error(lista_error,self.get_fila(size),self.get_columna(size),self.entrada[actual],"Uso incorrecto de la comilla una Comilla '")
+                return size
+            
         return actual

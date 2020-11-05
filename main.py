@@ -13,6 +13,7 @@ class Main():
         self.reporte_error = Reporte()
         self.archivo = Archivo()
         self.graph = Graphviz()
+        self.salvar = 1
 
     def menu_principal(self,lista_error,lista_token):
         print("\n**********************************************************")
@@ -152,10 +153,12 @@ class Main():
                             actual = self.archivo.anazalidar_a.elemento_matriz[j].getContador()
                             
                             if (self.archivo.anazalidar_a.elemento_matriz[j].getEtiqueta()=='#'):
-                                self.archivo.anazalidar_a.elemento_matriz[j].setEtiqueta(self.retornar_etiqueta(actual))
-
+                                print(f'{self.retornar_etiqueta(actual)}{str(self.salvar)}')
+                                self.archivo.anazalidar_a.elemento_matriz[j].setEtiqueta(f'{self.retornar_etiqueta(actual)}{str(self.salvar)}')
+                                self.salvar +=1
                                 if(self.archivo.anazalidar_a.elemento_matriz[j].getColor()=='#'):
                                     self.archivo.anazalidar_a.elemento_matriz[j].setColor(self.retornar_color(actual))
+                                   
                             else:
                                 if(self.archivo.anazalidar_a.elemento_matriz[j].getColor()=='#'):
                                     self.archivo.anazalidar_a.elemento_matriz[j].setColor(self.retornar_color(actual))
