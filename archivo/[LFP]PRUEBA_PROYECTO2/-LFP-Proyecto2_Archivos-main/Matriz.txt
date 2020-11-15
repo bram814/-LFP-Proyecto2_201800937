@@ -1,0 +1,6 @@
+maTriz (4,4,'((( Frutas )))',rectangulo,verdadero){
+    fIla ('Uvas', 'Arandanos','Jose',#) morado2;
+    fila ('Sandias',#,'Manzanas')rojo2;
+    nodo (3,3,#)#;
+    nodo (4,4,'Mango') anaranjado2;
+} defecto ('Disponible') amarillo2;

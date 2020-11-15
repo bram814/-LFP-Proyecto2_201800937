@@ -1,0 +1,9 @@
+// ERROR, lista está repedita
+lista('DIGITOS 0123456789',diamante,falso)
+{
+    nodo ('-> 0') amarillo3 ;
+    //# // ERROR, NO SE ESPERABA '#'
+    nodos (9, '->') amariLLo3;    
+    //& // Error, caracter inválido 
+} 
+defecto ('NADA') CAFE;

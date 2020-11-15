@@ -1,0 +1,9 @@
+// ERROR, lista está repedita
+lista ('¡LISTA DIGITOS!',punto,Verdadero)
+{
+    nodo ('D -> 0') anaranjado ;
+    //# // ERROR, NO SE ESPERABA '#'
+    nodos (9, 'D ->') anaranjado;    
+    //& // Error, caracter inválido 
+} 
+defecto ('NADA') Blanco;

@@ -1,0 +1,7 @@
+Lista                     ('>>> Personas <<<',               circulo                 ,             verdadero      ){
+    nodo ('Luis') azul2 ;
+    nodos (2, 'Personas') verde2;
+    nodo (#) #; // Nodo con valores por defecto
+    nOdo ('Manuel') rojo2;
+	nodos (1, 'Adulto') morado2;
+} defecto ('Disponible') blanco;
